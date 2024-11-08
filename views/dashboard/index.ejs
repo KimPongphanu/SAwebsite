@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/stylesheets/dashboard.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="navbox">
+            <br><br>
+            <div id="logo">
+                <img src="/images/admin/logoKab-orange2.png" alt="logo" style="width: 50px; height: 50px;">
+                <p>KabApartment</p>
+            </div>
+
+            <div id="menu">
+
+                <button id="optionButton"><img src="/images/icon/switch.png" alt="switch">
+                    <p>SwitchRoom</p>
+                </button>
+                <button id="optionButton"><img src="/images/icon/open-file.png" alt="folder">
+                    <p>RoomData</p>
+                </button>
+                <button id="optionButton"><img src="/images/icon/report.png" alt="folder">
+                    <p>SystemReport</p>
+                </button>
+                <button id="optionButton"><img src="/images/icon/user.png" alt="user">
+                    <p>Users</p>
+                </button>
+                <button id="optionButton"><img src="/images/icon/location.png" alt="location">
+                    <p>Traversal</p>
+                </button>
+                <button id="optionButton"><img src="/images/icon/upload.png" alt="upload">
+                    <p>Upload</p>
+                </button>
+                <button id="optionButton" onclick="logoutbtn();">
+                    <img src="/images/icon/turn-off.png" alt="folder">
+                    <p>Log out</p>
+                </button>
+                <script>function logoutbtn() { window.location.href = "/dashboard/logout"; }</script>
+
+                <div id="datetime"></div>
+            </div>
+
+        </div>
+
+        <div class="mainbox">
+            <div id="mainbox">
+
+                <div class="BoxOfFunction">
+                    <div id="output"></div>
+                    <div id="parent-text">
+                        <div id="child-text">
+                            <div></div>
+                            <p>Occupied</p>
+                        </div>
+                        <div id="child-text">
+                            <div></div>
+                            <p>Unoccupied</p>
+                        </div>
+                        <div id="child-text">
+                            <div><img src="/images/icon/choose.png"></div>
+                            <p>Click to UpdateRoom</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="BoxOfFunction">
+                    <div id="dataBox"></div>
+                </div>
+
+                <div class="BoxOfFunction">
+                    <div class="reportBox">
+                        <div class="rBox-1">
+                            <div>
+                                <p>Event</p>
+                                <p id="reportCount"></p>
+                            </div>
+                            <div>
+                                <p>Login</p>
+                                <p id="reportLogin"></p>
+                            </div>
+                            <div>
+                                <p>Booking</p>
+                                <p>Coming Soon</p>
+                            </div>
+                            <div>
+                                <p>Customer</p>
+                                <p id="reportUserCount"></p>
+                            </div>
+                        </div>
+                        <div class="rBox-2">
+                            <div class="rb-2">
+                                <p>All Report</p>
+                                <div id="allReportBox"></div>
+                            </div>
+                            <div class="rb-3">
+                                <div class="boxOfBookDiv" style="display: flex;">
+                                    <div class="queue1" style="display: flex; padding: 8px; align-items: center;">
+                                        <div>QUEUE</div>
+                                    </div>
+
+                                </div>
+                                <div id="outputQ"></div>
+                            </div>
+
+                        </div>
+                        <div></div>
+
+                    </div>
+                    <style>
+                        #outputQ {
+                            
+                            overflow-y: scroll;
+                            position: relative;
+                            right: -5px;
+                            box-sizing: border-box;
+                            display: flex;
+                            flex-direction: column;
+                            align-items: stretch;
+                            justify-content: flex-start;
+                            width: 98%;
+                            height: 400px;
+                            padding: 10px;
+                            background-color: silver;
+                           
+                        }
+
+                        .boxOfBookDivChild {
+                            font-size: 14px;
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            padding: 10px;
+                            border: 1px solid #ccc;
+                            width: 95%;
+                            margin-bottom: 5px;
+                            background-color: #ffffff;
+                    
+                        }
+
+                        .boxOfBookDivChild div {
+                            flex: 1;
+                            text-align: center;
+                            padding: 5px;
+                        }
+
+                        .reportBox {
+                            display: flex;
+                            flex-direction: column;
+                            width: 100%;
+                            max-height: 100%;
+                            align-items: center;
+                            justify-content: center;
+                        }
+
+                        .rBox-1 {
+                            align-items: center;
+                            justify-content: center;
+                            width: 100%;
+                            display: flex;
+                            flex-direction: row;
+
+
+                            & div {
+                                box-sizing: border-box;
+                                margin: 20px;
+                                width: 200px;
+                                height: 120px;
+                                text-align: center;
+                                background-color: rgba(255, 255, 255, 0.4);
+                                border-radius: 7px;
+                                color: seashell;
+                                font-weight: 600;
+                                font-size: 24px;
+                            }
+
+                            & div>p:nth-child(1) {
+                                font-family: sans-serif;
+                            }
+
+                            & div>p:nth-child(2) {
+                                color: rgb(255, 0, 0);
+                            }
+                        }
+
+                        .rBox-2 {
+                            align-items: center;
+                            justify-content: center;
+                            display: flex;
+                            flex-direction: row;
+                            width: 96%;
+                            height: 500px;
+
+                            box-sizing: border-box;
+
+                            & div {
+                                align-items: center;
+                                justify-content: center;
+                            }
+
+                            & div:nth-child(1) {
+                                display: flex;
+                                flex-direction: column;
+                            }
+                        }
+
+                        .rb-2 {
+                            margin: 10px;
+                            width: 40%;
+                            height: 90%;
+                            background-color: darkgray;
+                            border-radius: 10px;
+                        }
+
+                        .rb-3 {
+
+                            margin: 10px;
+                            width: 40%;
+                            height: 90%;
+                            background-color: darkgray;
+                            border-radius: 10px;
+
+                        }
+
+                        #allReportBox {
+                            overflow-y: auto;
+                            width: 90%;
+                            height: 85%;
+                            background-color: silver;
+                            border: 3px solid slategray;
+
+                        }
+
+                        .reportOutput {
+                            width: 90%;
+                            margin-left: 6px;
+                            font-size: 11.5px;
+                            font-weight: 560;
+                            border-bottom: 2px solid rgb(255, 0, 0);
+
+                        }
+                    </style>
+                </div>
+
+                <div class="BoxOfFunction">
+                    <div id="boxOfUser">
+                        <div class="boxOfUserDiv">
+                            <div><img src="/images/icon/userofnav.png" alt="exUserProfile"></div>
+                            <div>FirstName</div>
+                            <div>LastName</div>
+                            <div>TelePhone</div>
+                            <div>Email</div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="BoxOfFunction">
+                    <div id="menuTraversalout"></div>
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
+
+    <script type="module">
+        import roomClass from '../javascripts/class/roomClass.js';
+        import userInfoClass from '../javascripts/class/userInfoClass.js';
+        import reportClass from '../javascripts/class/reportClass.js';
+        import bookClass from '../javascripts/class/bookClass.js';
+
+
+        //Start
+        document.addEventListener('DOMContentLoaded', async () => { //start
+            //Class
+            const objRoom = new roomClass();
+            const objUser = new userInfoClass();
+            const objReport = new reportClass();
+            const objBook = new bookClass();
+            //objClass
+            let getRoomNo = await objRoom.getRoomNo();
+            let getRoomStatus = await objRoom.getRoomStatus();
+
+            //method or function
+            fetchRoom(getRoomNo, getRoomStatus);
+            fetchReport(objReport);
+            getButton();
+            getTraversalBox()
+            getUser(objUser);
+            setInterval(updateDateTime, 1000);
+            updateDateTime();
+            getNavReport();
+            getBook(objBook, objUser);
+            // fetchSessionTimeRemaining();
+            // setInterval(fetchSessionTimeRemaining, 1000);
+        });
+
+        async function getNavReport() {
+            //const objRoom = new roomClass();
+            const objUser = new userInfoClass();
+            const objReport = new reportClass();
+
+            let userCount = await objUser.getUserCount();
+            let countReport = await objReport.getReportCount();
+            let countLogin = await objReport.getReportLoginCount();
+            let reportTextCount = document.getElementById('reportCount');
+            let reportTextCountLogin = document.getElementById('reportLogin');
+            let userTextCount = document.getElementById('reportUserCount');
+            reportTextCount.innerHTML = countReport;
+            reportTextCountLogin.innerHTML = countLogin;
+            userTextCount.innerHTML = userCount;
+        }
+
+        async function toggleRoomStatus(roomno, currentStatus) {
+            const newStatus = currentStatus === 1 ? 0 : 1; // สลับสถานะ
+            try {
+                const response = await fetch(`/dashboard/${roomno}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error(`Failed to update room status: ${errorText}`);
+                    return;
+                }
+
+                // หลังจากอัปเดตสถานะห้องสำเร็จ
+                console.log(`Room ${roomno} status updated to ${newStatus}`);
+
+                const objRoom = new roomClass();
+                await objRoom.fetchData();
+                const objReport = new reportClass();
+                //objClass
+                let getRoomNo = await objRoom.getRoomNo();
+                let getRoomStatus = await objRoom.getRoomStatus();
+                await fetchRoom(getRoomNo, getRoomStatus);
+                fetchReport(objReport);
+                getNavReport();
+
+
+            } catch (error) {
+                console.error("Error updating room status:", error);
+            }
+        }
+
+        async function fetchRoom(item, status) {
+            // js output
+            let out = document.getElementById('output');
+            let size = item.length;
+            if (out) {
+                out.innerHTML = "";
+
+                for (let i = 0; i < size; i++) {
+                    let row = document.createElement('button');
+                    row.className = 'square';
+
+                    let img = [document.createElement('img'),
+                    document.createElement('img')];
+
+                    img[0].src = "/images/icon/bed.png";
+                    img[1].src = "/images/icon/bed-bunk.png";
+
+                    if (item[i] === 400) {
+                        row.appendChild(img[1]);
+                    } else {
+                        row.appendChild(img[0]);
+                    }
+
+                    let text = document.createTextNode(item[i]);
+                    row.appendChild(text);
+
+                    row.style.backgroundColor = status[i] === 1 ? '#dc7633' : '#58d68d';
+                    row.setAttribute('data-room-id', item[i]);
+
+                    row.addEventListener('click', function () {
+                        toggleRoomStatus(item[i], status[i]);
+                    });
+
+                    row.addEventListener('mouseover', () => {//
+                        row.style.color = 'white';
+                        row.style.opacity = '50%';
+                        row.style.transition = '0.5s ease';
+                    });
+
+                    row.addEventListener("mouseover", function () {
+                        row.style.color = 'white';
+                        row.style.opacity = '50%';
+                        row.style.transition = '0.5s ease';
+                    });
+
+
+                    row.addEventListener('mouseout', () => {
+                        row.style.color = 'black';
+                        row.style.opacity = '100%';
+                        row.style.transition = '0.5s ease'
+                    })
+
+                    out.appendChild(row);
+                }
+            }
+            //fetchRoom2
+            let out1 = document.getElementById('dataBox');
+            if (out1) {
+                out1.innerHTML = "";
+
+                for (let i = 0; i < size; i++) {
+                    let row = document.createElement('div');
+                    row.className = 'square';
+                    let img = document.createElement('img');
+                    img.src = "/images/icon/search.png";
+                    let text = document.createTextNode(item[i]);
+                    row.appendChild(img);
+                    row.appendChild(text);
+                    row.style.backgroundColor = status[i] === 1 ? '#aab7b8' : '#f4d03f';
+                    row.setAttribute('data-room-id', item[i]);
+
+                    row.addEventListener('mouseover', () => {
+                        row.style.color = 'white';
+                        row.style.opacity = '50%';
+                        row.style.transition = '0.5s ease'
+                    });
+
+                    row.addEventListener('mouseout', () => {
+                        row.style.color = 'black';
+                        row.style.opacity = '100%';
+                        row.style.transition = '0.5s ease'
+                    })
+
+                    row.addEventListener("click", () => {
+                        window.location.href = `/dashboard/dataroom/${item[i]}`;
+                    })
+
+                    out1.appendChild(row);
+                }
+            }
+        }
+
+        async function fetchReport(objReport) {
+
+            let getReportUserID = await objReport.getReportUserID();
+            let getReportID = await objReport.getReportID();
+            let getReportfunction = await objReport.getReportfunction();
+            let getReportDatetime = await objReport.getReportDatetime();
+            let size = await objReport.getReportCount();
+
+            // js datalog
+            let out = document.getElementById('allReportBox');
+            if (out) {
+                out.innerHTML = "";
+
+                for (let i = 0; i < size; i++) {
+                    let row = document.createElement('p');
+                    row.className = 'reportOutput';
+                    row.innerHTML = "[" + getReportID[i] + "] " + "[ " + getReportDatetime[i] + "] " + " ID: " + getReportUserID[i] + " status:: " + getReportfunction[i];
+                    out.appendChild(row);
+                }
+            }
+        }
+
+        function updateDateTime() {
+            const now = new Date();
+            //h:m:s
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            //d/m/y
+            const day = String(now.getDate()).padStart(2, '0');
+            const month = String(now.getMonth() + 1).padStart(2, '0');
+            const year = String(now.getFullYear()).slice(-2);
+            //show 
+            document.getElementById('datetime').innerHTML = `${hours}:${minutes}:${seconds} <br> ${day}/${month}/${year}`;
+        }
+
+        function getFunctionButton(index) {
+            let displayType = document.querySelectorAll(".BoxOfFunction");
+            let buttonOfMenu = document.querySelectorAll("#optionButton");
+            let size = buttonOfMenu.length;
+
+            if (index < 0 || index >= size) {
+                console.error("Index Out og bounds");
+                return;
+            }
+            //Find click[index] and change status them.
+            for (let i = 0; i < size; i++) {
+                if (i === index) {
+                    buttonOfMenu[index].style.backgroundColor = "#d17e7e5d";
+                    displayType[index].style.display = "block";
+                } else {
+                    buttonOfMenu[i].style.backgroundColor = "#ffffff00";
+                    displayType[i].style.display = "none";
+                }
+            }
+        }
+
+        function getButton() {
+            let displayType = document.querySelectorAll(".BoxOfFunction"); //6
+            let buttonOfMenu = document.querySelectorAll("#optionButton");
+            //start *********** for tester and edit for long time ************
+            buttonOfMenu[0].style.backgroundColor = "#d17e7e5d";
+            displayType[0].style.display = "block";
+            displayType[1].style.display = "none";
+            displayType[2].style.display = "none";
+            displayType[3].style.display = "none";
+            displayType[4].style.display = "none";
+
+
+            buttonOfMenu.forEach((div, index) => { //for loop
+                div.addEventListener("mouseover", () => { div.style.opacity = "30%" });
+                div.addEventListener("mouseout", () => { div.style.opacity = "100%" });
+
+                div.addEventListener("click", () => {
+                    if (index === 5) {
+                        window.location.href = "/upload";
+                    } else {
+                        getFunctionButton(index);
+                    }
+
+                });
+            });
+        }
+
+        function getTraversalBox() {
+            let text = ["Start", "login", "ViewRoom", "A-Type", "B-Type", "C-Type", "D-Type"];
+            let link = ["/", "/login", "/Available", "/Available/A-type"
+                , "/Available/B-type", "/Available/C-type"
+                , "/Available/D-type"];
+
+            let icon = ["/images/icon/home.png", "/images/icon/login.png", "/images/icon/list.png",
+                "/images/icon/letter-a.png", "/images/icon/letter-b.png", "/images/icon/letter-c.png",
+                "/images/icon/letter-d.png"];
+
+            let output = document.getElementById('menuTraversalout');
+
+            let img = [];
+            for (let i = 0; i < icon.length; i++) {
+                img[i] = document.createElement('img');
+                img[i].src = icon[i];
+            }
+
+            if (output) {
+                output.innerHTML = "";
+                for (let i = 0; i < 7; i++) {
+                    let child = document.createElement('button');
+                    child.className = 'menuTraversal';
+
+                    child.appendChild(img[i]);
+                    child.appendChild(document.createTextNode(text[i]));
+
+                    child.addEventListener("click", () => {
+                        window.location.href = link[i];
+                    });
+                    child.addEventListener("mouseover", () => {
+                        child.style.opacity = "0.3";
+                        child.style.borderColor = "#F5F5F5";
+                        child.style.transition = "0.25s ease";
+
+                    })
+                    child.addEventListener("mouseout", () => {
+                        child.style.opacity = "1";
+                        child.style.borderColor = "#996515";
+                        child.style.transition = "0.25s ease";
+                    })
+
+                    output.appendChild(child);
+                }
+            }
+        }
+
+        async function getUser(objUser) {
+            let getUserID = await objUser.getUserID();
+            let getUserFirstName = await objUser.getUserFirstName();
+            let getUserLastName = await objUser.getUserLastName();
+            let getUserEmail = await objUser.getUserEmail();
+            let getUserPhone = await objUser.getUserPhone();
+
+            let parent = document.getElementById('boxOfUser');
+            let size = getUserID.length;
+
+            if (parent) {
+                //parent.innerHTML = ""; 
+                for (let i = 0; i < size; i++) {
+                    let row = document.createElement('div');
+                    row.className = 'boxOfUserDiv';
+
+                    let imgDiv = document.createElement('div');
+                    let fnameDiv = document.createElement('div');
+                    let lnameDiv = document.createElement('div');
+                    let phoneDiv = document.createElement('div');
+                    let emailDiv = document.createElement('div');
+
+                    let img = document.createElement('img');
+                    img.src = "/images/icon/userofnav.png";
+                    imgDiv.appendChild(img);
+
+                    fnameDiv.innerHTML = getUserFirstName[i];
+                    lnameDiv.innerHTML = getUserLastName[i];
+                    phoneDiv.innerHTML = getUserPhone[i];
+                    emailDiv.innerHTML = getUserEmail[i];
+
+                    row.appendChild(imgDiv);
+                    row.appendChild(fnameDiv);
+                    row.appendChild(lnameDiv);
+                    row.appendChild(phoneDiv);
+                    row.appendChild(emailDiv);
+
+                    parent.appendChild(row);
+                }
+            }
+        }
+
+
+        async function getBook(objBook, objUser) {
+
+            let getBookUserID = await objBook.getBookUserID();
+            let getBookRoomType = await objBook.getBookRoomType();
+            let getBookDate = await objBook.getBookDate();
+            let getBookTime = await objBook.getBookTime();
+            let getBookCrateAt = await objBook.getBookCrateAt();
+
+            let getUserFirstName = await objUser.getUserFirstName();
+            let getUserLastName = await objUser.getUserLastName();
+
+
+            let parent = document.getElementById('outputQ');
+            let size = getBookUserID.length;
+
+            if (parent) {
+                //parent.innerHTML = ""; 
+                for (let i = 0; i < size; i++) {
+                    let row = document.createElement('div');
+                    row.className = 'boxOfBookDivChild';
+
+                    let allDiv = document.createElement('div');
+
+
+                    allDiv.innerHTML = getBookUserID[i] + " " +
+                        getBookRoomType[i] + " " + getBookDate[i] + " " + getBookTime[i] + " " + getBookCrateAt[i];
+
+                    row.appendChild(allDiv);
+
+                    parent.appendChild(row);
+                }
+            }
+        }
+
+    </script>
+
+
+</body>
+
+</html>

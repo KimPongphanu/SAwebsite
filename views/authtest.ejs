@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= action === 'register' ? 'Register' : 'Login' %></title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-weight: 520;
+            max-width: 1482px;
+        }
+
+        body {
+            display: grid;
+            width: 1482px;
+            height: 706px;
+            overflow: hidden;
+            background-color: #f0f0f0; /* Optional: Add a background color */
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container, .container2 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 600px; /* Adjusted height */
+            color: whitesmoke;
+        }
+
+        .boxLeft, .box-left2 {
+            display: grid;
+            width: 400px;
+            height: 500px;
+            background-color: #013220;
+            padding: 5%;
+            text-align: center;
+            border-radius: 10px; /* Rounded corners */
+        }
+
+        form {
+            margin: 0;
+            display: flex;
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center;
+            
+        }
+
+        label {
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+        }
+
+        input {
+            padding: 5px;
+            width: 100%;
+            height: 20px;
+            border-radius: 5px;
+            border: 2px solid #eaff00;
+        }
+
+        p#status-error {
+            color: red;
+            font-size: 10px;
+            margin: 0;
+        }
+
+        button {
+            font-size: 18px;
+            font-weight: 700;
+            width: 50%;
+            height: 40px;
+            margin-top: 10px;
+            border-radius: 10px;
+            background-color: #BA9E88;
+            color: white;
+            border: none;
+        }
+
+
+        #loginForm > input{
+            height:25px;
+        }
+
+        #loginForm > label{
+            
+            font-size: 18px;
+            align-items: center;
+            justify-content: center;
+            place-items: center;
+        }
+
+        form img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            padding: 20px;
+        }
+
+        #divRegister {
+            align-items: center;
+            justify-content: center;
+            display: flex;
+        }
+
+        #btn-register {
+            margin: 5px;
+            width: 90px;
+            height: 25px;
+            padding: 0px;
+            border-radius: 6px;
+            font-size: 16px;
+            background-color: #ebe7e591; 
+            color: #e2adad; 
+        }
+
+        .container2 {
+            display: none; /* Hide the registration form by default */
+        }
+
+        .slideshow {
+            width: 400px; /* ขนาด container */
+            height: 580px;
+            position: relative;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        .slideshow img {
+            position: absolute;
+            width: 0%;
+            height: 100%;
+            opacity: 0;
+            animation: imageAnimation 15s infinite;
+            
+        }
+
+        /* การกำหนด keyframes สำหรับการแสดงรูป */
+        @keyframes imageAnimation {
+            0% { opacity: 0; width: 0%; }
+            4% { opacity: 1; width: 100%; }
+            20% { opacity: 1; width: 100%; }
+            24% { opacity: 0; width: 0%; }
+        }
+
+        /* กำหนดลำดับการแสดงผลให้แต่ละรูป */
+        img:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        img:nth-child(2) {
+            animation-delay: 3s;
+        }
+
+        img:nth-child(3) {
+            animation-delay: 6s;
+        }
+
+        img:nth-child(4) {
+            animation-delay: 9s;
+        }
+
+        img:nth-child(5) {
+        animation-delay: 12s;
+        }
+
+        label[for="confirmPassword"]{
+
+            align-items: center;
+            justify-content: center;
+            display: flex;
+        }
+
+        label[for="confirmPassword"] > p{
+            margin-left: 10px;
+            color: red;
+            
+        }
+
+        #registerForm{
+            display: grid;
+        }
+    </style>
+</head>
+<body>
+
+    <% if (typeof error !== 'undefined' && error !== null) { %>
+        <script>alert('<%= error %>');</script>
+    <% } %>
+
+    <% if (typeof success !== 'undefined') { %>
+        <script>
+            alert('<%= success %>');
+        </script>
+    <% } %>
+
+    <!-- Login Form -->
+    <div class="container">
+        <div class="boxLeft">
+            <form action="/login" method="post" id="loginForm">
+                <input type="hidden" name="action" value="login"> 
+                <img src="/images/admin/logoKab-orange2.png" alt="Logo"><br>
+                <label for="email">เบอร์โทรศัพท์</label><br>
+                <input type="email" name="email" id="email" required><br>
+                <label for="password">Password</label><br>
+                <input type="password" name="password" id="password" required><br>
+                <button type="submit" id="btn">Login</button>
+            </form>
+            <div id="divRegister">
+                <h3>Not registered yet?</h3>
+                <button id="btn-register" type="button" onclick="showRegister()">Register</button>
+            </div>
+        </div>
+        <div class="boxRight">
+            <div class="slideshow">
+                <img src="/images/view/view1.png" alt="Image 1">
+                <img src="/images/view/view2.png" alt="Image 2">
+                <img src="/images/view/view3.png" alt="Image 3">
+                <img src="/images/view/view4.png" alt="Image 4">
+                <img src="/images/view/view5.png" alt="Image 5">
+            </div>
+        </div>
+    </div>
+
+    <!-- Registration Form -->
+    <div class="container2">
+        <div class="box-left2">
+            <form action="/login" method="post" id="registerForm">
+                <input type="hidden" name="action" value="register"> 
+                
+                <label for="firstname">ชื่อจริง:</label>
+                <input type="text" id="firstname" name="firstname" required>
+
+                <label for="lastname">นามสกุล:</label>
+                <input type="text" id="lastname" name="lastname" required>
+
+                <label for="phone">เบอร์โทรศัพท์มือถือ 10 หลัก:</label>
+                <input type="text" id="phone" name="phone" required>
+
+                <label for="email">อีเมล:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="password">รหัสผ่าน (6-15 อักษร):</label>
+                <input type="password" id="rPassword" name="password" required> 
+
+                <label for="confirmPassword">ยืนยันรหัสผ่าน<p> (รหัสผ่านตรงตรงกับด้านบน)</p>:</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required>
+
+                <p id="status-error"></p>
+                <button type="submit">Register</button>
+            </form>
+            <p>Already have an account? <a href="#" onclick="showLogin()">Login here</a></p>
+        </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+            const form = document.getElementById('registerForm');
+            const rPassword = document.getElementById("rPassword");
+            const confirmPassword = document.getElementById('confirmPassword');
+            const statusError = document.getElementById('status-error');
+
+            form.addEventListener("submit", function(event) {
+                let errorMessage = "";
+                const password = rPassword.value;
+                const confirm = confirmPassword.value;
+
+                if (password.length < 6 || password.length > 15) {
+                    errorMessage += "รหัสผ่านต้องมี 6-15 อักษร\n";
+                }
+
+                if (password !== confirm) {
+                    errorMessage += "รหัสผ่านไม่ตรงกัน\n";   
+                }
+
+                if (errorMessage !== "") {
+                    event.preventDefault(); 
+                    statusError.textContent = errorMessage;
+                    statusError.style.color = "red";
+                } else {
+               
+                    statusError.textContent = "";
+
+                }
+            });
+
+            rPassword.addEventListener("input", function() {
+                statusError.textContent = "";
+            });
+
+            confirmPassword.addEventListener("input", function() {
+                statusError.textContent = "";
+            });
+        });
+                    
+            
+        </script>
+        <div class="boxRight">
+            <div class="slideshow">
+                <img src="/images/view/view1.png" alt="Image 1">
+                <img src="/images/view/view2.png" alt="Image 2">
+                <img src="/images/view/view3.png" alt="Image 3">
+                <img src="/images/view/view4.png" alt="Image 4">
+                <img src="/images/view/view5.png" alt="Image 5">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showRegister() {
+            document.querySelector('.container').style.display = 'none';
+            document.querySelector('.container2').style.display = 'flex';
+        }
+
+        function showLogin() {
+            document.querySelector('.container').style.display = 'flex';
+            document.querySelector('.container2').style.display = 'none';
+        }
+
+        // Optional: Add your slideshow functionality here
+    </script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon"type="image/jpg" href="/images/admin/icon-north2.png">
+    <link rel="stylesheet" href="/stylesheets/information.css">
+    <title>Information</title>
+</head>
+<body>
+    <style>
+        body{
+            align-items: center;
+            justify-content: center;
+        }
+        .pic-zones{
+            position:relative;
+            right: 900px;
+            top: 100px;
+            padding: 30px;
+            align-items: center;
+            justify-items: center;
+            
+        }
+        #pic-zone-1{
+            position: relative;
+            width: 200px;
+            height: 200px;
+            right: 600px;
+            top: 50px;  
+            border: 5px solid rgba(172, 255, 47, 0.732);
+            border-radius: 15px;
+            box-shadow: 3px 3px 3px 3px black;
+        }
+
+        #pic-zone-2{
+            position: relative;
+            width: 300px;
+            height: 300px;
+            right: 1050px;
+            top: 50px;
+            border: 5px solid rgb(255, 124, 124);
+        }
+        form{
+            font-family: cursive;
+            font-size: 18px;
+            font-weight: 900;
+        }
+        input{
+            width: 400px;
+            height: 40px;
+        }
+
+        .main{
+            display: flex; 
+            position: relative;
+            width: 1200px;
+            height: 700px;
+            background-color: rgb(107, 143, 169);
+        }
+
+        .btn{
+           display: block;
+           margin-left: -950px;
+           margin-top: 350px;
+        }
+
+        #btn-1,#btn-2,#btn-3 {
+            margin-top: 10px;
+            font-size: 20px;
+            font-family: cursive;
+            font-weight: bold;
+            width: 300px;
+            height: 80px;
+        } 
+        
+    </style>
+    
+    <div class="main">
+        <div class="container-1" style="display: flex; margin: 20px;" >
+            <form action="">
+                <h3>ข้อมูลเจ้าของห้องพัก</h3>
+                <label for="fname">ชื่อ</label><br>
+                <input type="text" id="fname" name="fname" value="พงศ์ภาณุ"><br>
+                <label for="mname">ชื่อกลาง *ถ้ามี</label><br>
+                <input type="text" id="mname" name="mname" value=""><br>
+                <label for="lname">นามสกุล</label><br>
+                <input type="text" id="lname" name="lname" value="ซุ่นสั้น"><br>
+                <label for="date">วันเกิด</label><br>
+                <input type="datetime" id="date" name="datetime" value="5/9/2567"><br>
+                <label for="id">เลขบัตรประจำตัวประชาชน 13 หลัก</label><br>
+                <input type="number" id="id" name="id" value="3697045665082"><br>
+                <label for="email">อีเมล</label><br>
+                <input type="email" id="email" name="email" value="AvocadoX@email.com"><br>
+                <label for="tel">เบอร์โทรศัพท์มือถือ 10 หลัก</label><br>
+                <input type="tel" id="tel" name="tel" value="0xx-xxx-xxxx"><br>
+                <label for="job">อาชีพ</label><br>
+                <input type="text" id="job" name="job" value="นักเรียน/นักศึกษา"><br>
+            </form>
+    
+            <form action="">
+                <h3>ข้อมูลห้อง</h3>
+                <label for="roomid">รหัสห้องพัก X000 </label><br>
+                <input type="text" id="idroom" value="A001"><br>
+                <label for="size">ขนาด ตร.ม</label><br>
+                <input type="text" id="size" value="40 ตร.ม"><br>
+                <label for="price">ราคา (บาท)</label><br>
+                <input type="text" id="price" name="price" value="20,000,000"><br>
+            </form>
+        </div>
+
+        <div class="pic-zone" style="display: grid; margin-left: 55%;">
+            <img id="pic-zone-1" src="/images/admin/Unidentify-Profile.jpg" alt="" >
+            <img id="pic-zone-2" src="/images/status/room2.jpg" alt="" >
+        </div>
+        <div class="btn">
+            <button style="background-color: purple;" id="btn-1" type="button">Change Profile</button>
+            <button style="background-color: rgb(255, 165, 20);" id="btn-2" type="button">Change Room_image</button>
+            <button style="background-color: green;" id="btn-3" type="submit">summit</button>
+        </div>
+        
+    
+
+
+    </div>
+    
+</body>
+</html>

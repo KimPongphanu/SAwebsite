@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon"type="image/jpg" href="/images/admin/icon-north2.png">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap" rel="stylesheet">
+    <title>Series-Room</title>
+</head>
+<body>
+
+    <style>
+        body{
+            display: flex;
+            flex-direction: column;
+            width: 1442px;
+            height: 706px;
+            max-height: 900px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cinzel';
+        }
+
+        /* ul{
+            position: relative;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            top:-20px;
+            overflow: hidden;
+            background-color: #013220;
+        }
+
+        li {
+            float: left;
+        }
+
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 30px 30px;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+
+        li a:hover {
+            background-color: #013220;
+        } */
+
+        .main .page{
+           display: inline-block;
+           margin: 10px;
+           margin-left: 30px;
+        }
+
+        .page{
+            display: block;
+            justify-content: center;
+            align-items: center;
+            width: 300px;
+            height: 340px;
+            background-color: #f5f5f5;
+            color: #996515;
+            border-radius: 4px;
+            border: 1px solid #996515;
+        }
+        
+        .boxtext{
+            padding-left: 10px;
+            text-align: start;
+            font-size: 20px;
+            font-weight: 400;
+        }
+
+        .page-pic{
+            border-bottom: 1px solid #996515;
+            border-radius: 4px;
+            width: 298px;
+            height: 250px;
+            object-fit: cover;
+        }
+    </style>
+    <div class="main">
+        <div id="page-output"></div>
+    </div>
+   
+    <script>
+
+        document.addEventListener("DOMContentLoaded",()=>{
+            showPage();
+        });
+
+        function showPage(){
+
+            let location = ["http://localhost:3000/available/A-type",
+                            "http://localhost:3000/available/B-type",
+                            "http://localhost:3000/available/C-type",
+                            "http://localhost:3000/available/D-type"];
+
+            let img = ["https://i.pinimg.com/564x/8d/ff/fe/8dfffec41dffecf58efcb955f967a6f1.jpg",
+                        "https://i.pinimg.com/564x/ab/b7/8e/abb78ef1f417ca07eaafa9282e36e208.jpg",
+                        "https://i.pinimg.com/564x/bc/a0/e9/bca0e96682c766f3d187d479ade20932.jpg",
+                        "https://i.pinimg.com/564x/36/07/89/3607891ca710415128e25e0c0ffba483.jpg"];
+            let serie = ['A','B','C','D'];
+            let typeRoom = ["Studio Room","Loft Room","Penthouse Room","Common Area"];
+            let page = document.getElementById('page-output');
+            if( page ){
+                page.innerHTML = '';
+                for(let i = 0;i < img.length;i++){
+                    let out = document.createElement('div');
+                    out.className = 'page';
+                    let boxtext = document.createElement('div');
+                    boxtext.className = "boxtext";
+                    let text = document.createElement('p');
+                    text.innerHTML = "Serie: "+serie[i]+"<br>"+typeRoom[i];
+                    let pic = document.createElement('img');
+                    pic.src = img[i];
+                    pic.alt = typeRoom[i];
+                    pic.className = 'page-pic';
+                    out.addEventListener("click",function(){
+                        if(serie[i] === 'A'){
+                            window.location.href = location[i];
+                        }else if(serie[i] === 'B'){
+                            window.location.href = location[i];
+                        }else if(serie[i] === 'C'){
+                            window.location.href = location[i];
+                        }else if(serie[i] === 'D'){
+                            window.location.href = location[i];
+                        }
+                    });
+
+                    out.addEventListener("mouseover",()=>{
+                        if(serie[i] === 'A'){
+                            out.style.boxShadow = "1px 1px 1px 1px #996515";
+                        }else if(serie[i] === 'B'){
+                            out.style.boxShadow = "1px 1px 1px 1px #996515";
+                        }else if(serie[i] === 'C'){
+                            out.style.boxShadow = "1px 1px 1px 1px #996515";
+                        }else if(serie[i] === 'D'){
+                            out.style.boxShadow = "1px 1px 1px 1px #996515";
+                        }
+                    })
+
+                    out.addEventListener("mouseout",()=>{
+                        if(serie[i] === 'A'){
+                            out.style.boxShadow = "0px 0px 0px 0px";
+                        }else if(serie[i] === 'B'){
+                            out.style.boxShadow = "0px 0px 0px 0px";
+                        }else if(serie[i] === 'C'){
+                            out.style.boxShadow = "0px 0px 0px 0px";
+                        }else if(serie[i] === 'D'){
+                            out.style.boxShadow = "0px 0px 0px 0px";
+                        }
+                    })
+
+                    out.appendChild(pic);
+                    out.appendChild(boxtext);
+                    boxtext.appendChild(text);
+                    page.appendChild(out);
+                    
+                }
+            }
+        }
+        
+        
+        
+    </script>
+
+</body>
+</html>

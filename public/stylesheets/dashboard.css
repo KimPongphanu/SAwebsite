@@ -1,0 +1,368 @@
+body{
+    width: 1442px;
+    max-height: 900px;
+    height: 706px;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    overflow: hidden;
+}
+
+.container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    
+    
+}
+
+.navbox{
+    position: relative;
+    width: 20%;
+    height: 100%;
+    margin: 0;
+    background-color: #013220;
+    display:ruby-base-container;
+    font-weight: 700;
+}
+
+#menu{
+    margin-top: 40px;
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    
+    
+}
+
+#logo{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    color: #996515;
+}
+
+#datetime{
+    margin-top: 15px;
+    width: 200px;
+    height: 40px;
+    border-radius: 40px;
+    font-size: 20px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 20px;
+    background-color: #ffffff00;
+    border: none;
+    color: #996515;
+}
+
+#optionButton{
+    margin-top: 15px;
+    width: 200px;
+    height: 40px;
+    border-radius: 40px;
+    font-size: 20px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    gap: 20px;
+    background-color: #ffffff00;
+    
+    border: none;
+    color: #996515;
+}
+
+#datetime{
+    align-items: center;
+    justify-content: center;
+}
+
+.BoxOfFunction{
+    margin-left: 40px;
+    width: 1140px;
+    height: 700px;
+    position: relative;
+    overflow: hidden;
+    /* background-color:slategray; */
+    background-color: #013220;
+    display: block;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.mainbox{
+    width: 100%;
+    height: 100%;
+    background-color:#ffffff;
+    align-items: center;
+    justify-content: center;
+    display: grid;
+}
+
+#mainbox{
+    place-content: center;
+}
+
+#output,#dataBox{
+    margin: 70px;
+    place-items: center;
+    display: grid;
+    grid-template-columns: repeat(5,18%);
+    gap: 20px;
+    
+}
+
+#parent-text{
+    color: #996515;
+    width: 300px; 
+    height: 100px;
+    position: absolute; 
+    display: grid;
+    grid-template-rows: repeat(1,50%);
+    right: 0; 
+    top: 75%; 
+    font-size: 20px; 
+    border-radius: 20px;
+}
+
+#child-text{
+    padding: 5px;
+    overflow: hidden;
+    position: relative;
+    display: inline;
+    width: 250px;
+    height: 30px;
+    border-radius: 0px;
+    justify-content: center;
+    align-items: center;
+    text-align: left;
+}
+
+#child-text p{
+    position: absolute;
+    left: 60px;
+    top: -15px;
+}
+
+#child-text div{
+    left:0;
+    position: absolute;
+    width: 50px;
+    height: 30px;
+}
+
+#child-text:nth-child(1) div{
+    background-color: #dc7633;
+}
+
+#child-text:nth-child(2) div{
+    background-color: #58d68d;
+}
+
+#child-text img{
+    position: absolute;
+}
+
+.square{
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
+    font-size: 24px;
+    font-family: monospace;
+    font-weight: 700;
+}
+
+.square img{
+    z-index: 1;
+}
+
+#visibilityBox{
+    display: grid;
+    width: 300px;
+    height: 300px;
+    background-color: #b7b3b3a4;
+    position: relative;
+    box-sizing: border-box;
+    top: 30px;
+    left: 30px;
+    border-radius: 15px;
+    text-align: center;
+}
+
+#status-text{
+    display: flex;
+}
+
+#statusTextBox{
+    position: absolute;
+    width: 200px;
+    height: 50px;
+    top: 50px;
+    left: 50px;
+    border: 3px solid black;
+    box-sizing: border-box;
+    overflow: hidden;
+    background-color: #ffffff5b;
+    
+}
+
+#statusTextBox div:nth-child(1){
+    width: 50px;
+    height: 43px;
+    border: 1px solid rgb(255, 255, 255);
+    position: absolute;
+    justify-content: center;
+    background-color: rgb(43, 255, 0);
+    
+}
+
+#statusTextBox div:nth-child(2){
+    position: relative;
+    place-items: center;
+    top: -10px;
+    left: 60px;
+    font-size: 20px;
+    font-weight: 800;
+    color: azure;
+}
+
+#visibilityBox button{
+    position: absolute;
+    width: 160px;
+    height: 30px;
+    top:120px;
+    left: 70px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+#textDenote{
+    position: relative;
+    top: 50px;
+    text-align: start;
+    padding: 2px;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+#menuTraversalout{
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(4,20%);
+    overflow-y: auto;
+}
+
+.menuTraversal{
+    margin: 2px;
+    padding: 10px;
+    place-items: center;
+    align-items: center;
+    justify-content: center;
+    display: grid;
+    width: 200px;
+    height: 200px;
+    border-radius: 15px;
+    background: transparent;
+    backdrop-filter: blur(2px);
+    border:3px solid #996515;
+    font-weight: 600;
+    font-size: 24px;
+    color: #996515;
+}
+
+.BoxOfFunction:nth-child(5){
+    display: grid;
+}
+
+#boxOfUser{
+    padding: 5px;
+    display: flexbox;
+    box-sizing: border-box;
+    position: relative;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    height: 90%;
+    
+    overflow-y:scroll;
+    color: #F5F5F5;
+}
+
+.boxOfUserDiv{
+    font-size: 18px;
+    font-family: sans-serif;
+    font-weight: 600;
+    width: 100%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 3px solid grey;
+    border-top: 3px solid grey;
+    padding: 0;
+    margin-top: 5px;
+}
+
+.boxOfUserDiv:nth-child(1){
+    background-color: #58d68d;
+    border-top: none;
+}
+
+.boxOfUserDiv > div{
+    position: relative;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    width: 20%;
+    height: 80px;
+    padding: 0; 
+}
+
+.boxOfUserDiv > div:nth-child(1){
+    width: 10%;
+    justify-content: center;
+}
+
+.boxOfUserDiv > div:nth-child(4){
+    width: 10%;
+}
+
+.boxOfUserDiv > div:nth-child(5){
+    margin-left: 50px;
+    justify-content: flex-start;
+    width: 40%;
+}
+
+#menuUpload{
+    display: flex;
+    position: relative;
+    width: 80%;
+    height: 80%;
+    top:10%;
+    left: 10%;
+    background-color: #89e7c4;
+    align-items: center;
+    justify-content: center;
+    
+}
+
+#exImgUpload{
+    
+    position: relative;
+    width: 30%;
+    height:60%;
+    background-color: #F5F5F5;
+}
+
+

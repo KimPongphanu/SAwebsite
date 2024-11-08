@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>testpenon</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            width: 1465px;
+            height: auto;
+            max-height: 900px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cinzel';
+        }
+
+        html {
+            height: 100%;
+        }
+
+        .user-img {
+            width: 50px;
+        }
+
+        .sidebar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 500vh;
+            width: 80px;
+            /*width: 250px;*/
+            background-color: #013220;
+            padding: .4rem .8rem;
+            transition: all 0.5s ease;
+            border-right: 1px solid #996515;
+        }
+
+        .sidebar.active~.main-content,
+        .sidebar.active~.image-container,
+        .sidebar.active~.top-content,
+        .sidebar.active~footer,
+        .sidebar.active~.footer-bottom,
+        .sidebar.active~.RoomType-Cont,
+        .sidebar.active~.Room-Type-Info,
+        .sidebar.active~.facilities-info,
+        .sidebar.active~.main-page {
+            left: 250px;
+            /* Move both .main-content and .top-content to the right */
+            width: calc(100% - 250px);
+            /* Reduce their width when the sidebar expands */
+        }
+
+        .sidebar.active {
+            width: 250px;
+        }
+
+        .sidebar #btn {
+            position: absolute;
+            color: #f5f5f5;
+            top: .4rem;
+            left: 50%;
+            font-size: 1.2rem;
+            line-height: 50px;
+            transform: translateX(-50%);
+            cursor: pointer;
+        }
+
+        .sidebar.active #btn {
+            left: 90%;
+        }
+
+        .sidebar .top .logo {
+            color: #f5f5f5;
+            display: flex;
+            height: 50px;
+            width: 100%;
+            align-items: center;
+            pointer-events: none;
+            opacity: 0;
+        }
+
+        .sidebar.active .top .logo {
+            opacity: 1;
+        }
+
+        .top .logo i {
+            font-size: 2rem;
+            margin-right: 5px;
+        }
+
+        .user {
+            display: flex;
+            align-items: center;
+            margin: 1rem 0;
+
+        }
+
+        .user p {
+            color: #996515;
+            opacity: 1;
+        }
+
+        .sidebar p {
+            opacity: 0;
+        }
+
+        .sidebar.active p {
+            opacity: 1;
+        }
+
+        .sidebar ul li {
+            position: relative;
+            list-style-type: none;
+            height: 50px;
+            width: 90%;
+            margin: 0.8rem auto;
+            line-height: 50px;
+        }
+
+        .sidebar ul li a {
+            color: #996515;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            border-radius: 0.8rem;
+        }
+
+        .sidebar ul li a:hover {
+            background-color: #f5f5f5;
+            color: black;
+        }
+
+        .sidebar ul li a i {
+            min-width: 50px;
+            text-align: center;
+            height: 50px;
+            border-radius: 12px;
+            line-height: 50px;
+        }
+
+        .sidebar .nav-item {
+            opacity: 0;
+        }
+
+        .sidebar.active .nav-item {
+            opacity: 1;
+        }
+
+        .sidebar ul li .tool {
+            position: absolute;
+            left: 10px;
+            /* ขยับออกจากเมนูมากขึ้น */
+            top: 50%;
+            transform: translateY(-50%);
+            /* ลบการขยับทางแกน X เพื่อให้กล่องเลื่อนเฉพาะด้าน Y */
+            box-shadow: 0 0.5rem 0.8rem rgba(0, 0, 0, 0.2);
+            border-radius: .6rem;
+            padding: .4rem 1.2rem;
+            line-height: 1.8rem;
+            z-index: 40;
+            opacity: 0;
+            transition: opacity 0.3s ease, left 0.3s ease;
+            /* เพิ่ม transition ให้ดูนุ่มนวล */
+        }
+
+        .sidebar ul li:hover .tool {
+            opacity: 1;
+            left: 70px;
+            /* ระยะห่างเมื่อ hover เพิ่มมากขึ้น */
+        }
+
+        .sidebar.active ul li .tool {
+            display: none;
+        }
+
+        .top-content {
+            position: relative;
+            background-color: #f5f5f5;
+            min-height: 80px;
+            top: 0;
+            left: 80px;
+            transition: all 0.5s ease;
+            width: calc(100% - 80px);
+            padding: 1.5rem;
+            border-bottom: 1px solid #996515;
+            flex: 0 0 auto;
+        }
+
+        .top-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-container .logo {
+            width: 90px;
+        }
+
+        .top-content .top-container .mini-text-container p {
+            color: #996515;
+        }
+        .top-btn {
+            position: relative;
+            transition: all 0.4s ease;
+            padding: 8px 12px; /* ปรับขนาดของปุ่ม */
+            font-size: 1rem; /* ขนาดตัวอักษรในปุ่ม */
+            width: 150px;
+            border-radius: 4px; /* มุมโค้งของปุ่ม */
+            background-color: #013220; /* สีพื้นหลังของปุ่ม */
+            color: #fff; /* สีตัวอักษร */
+            border: none; /* ลบเส้นขอบ */
+            cursor: pointer; /* เปลี่ยนเคอร์เซอร์เป็นรูปมือเมื่อชี้ไปที่ปุ่ม */
+            transition: background-color 0.5s ease; /* เพิ่มเอฟเฟกต์การเปลี่ยนสีพื้นหลังเมื่อ hover */
+            text-align: center;
+        }
+
+        .top-btn:hover {
+            transform: scale(1.1);
+            color: #f5f5f5;
+            background-color: #996515;
+            box-shadow: 0 12px 25px rgba(80, 80, 80, 0.5);
+            /* เปลี่ยนสีพื้นหลังเมื่อ hover */
+            
+        }
+
+        .main-page {
+            background-color: #fff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 100px;
+            position: relative;
+            top: 0;
+            left: 80px;
+            transition: all 0.5s ease;
+            width: calc(100% - 80px);
+        }
+        .container{
+            width: 800px;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border-radius: 4px;
+            box-shadow: 0 12px 25px rgba(80, 80, 80, 0.2);
+        }
+
+        /* .img-user img {
+            display: flex;
+            justify-content: center;
+            width: 300px;
+            height: 300px;
+            margin: 50px 0 50px 0;
+            border-radius: 360px;
+            border: 1px solid #996515;
+        } */
+
+        .user-info{
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        .user-info .top-info{
+            display: flex;
+            align-items: center;
+            width: 600px;
+            height: 50px;
+            color:#013220;
+            font-weight: 700;
+            margin-top: 10px;
+            margin-bottom: 10px;      
+            border-bottom: 1px solid #996515;
+        }
+
+        .user-info .front-letter{
+            display: flex;
+            align-items: center;
+            width: 600px;
+            height: 10px;
+            color:#996515;
+            font-weight: 700;
+            border-radius: 4px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+        .user-info .last-letter{
+            display: flex;
+            width: 600px;
+            height: 30px;
+            align-items: center;
+            background-color:#f5f5f5;
+            color:#013220;
+            font-weight: 400;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border: 1px solid #996515;
+        }
+
+        .user-info .bottom-letter{
+            color:#750000;
+            font-weight: 700;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        button.cancel-btn {
+            margin-top: 10px;
+            font-family: 'Cinzel';
+            transition: all 0.4s ease;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 300;
+            width: 250px;
+            border-radius: 4px;
+            background-color: #750000;
+            color: #f5f5f5;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.5s ease;
+            text-align: center;
+        }
+
+        button.cancel-btn:hover {
+            transform: scale(1.1);
+            color: #f5f5f5;
+            background-color: #550000;
+            box-shadow: 0 12px 25px rgba(80, 80, 80, 0.5);
+        }
+    </style>
+    <!----------------------------------------------------------->
+    <div class="sidebar">
+        <div class="top">
+            <div class="logo">
+                <i class="bx bxl-codepen"></i>
+                <span>KabApartment</span>
+            </div>
+            <i class="bx bx-menu" id="btn"></i>
+        </div>
+        <div class="user">
+
+        </div>
+        <ul>
+            <li>
+                <a href="/">
+                    <i class="bx bxs-info-square"></i>
+                    <span class="nav-item">INFORMATION</span>
+                </a>
+                <span class="tool">INFORMATION</span>
+            </li>
+            <li>
+                <a href="/available">
+                    <i class="bx bxs-door-open"></i>
+                    <span class="nav-item">ROOMTYPE</span>
+                </a>
+                <span class="tool">ROOMTYPE</span>
+            </li>
+            <li>
+                <a href="/available/A-type">
+                    <i class='bx bxs-door-open'></i>
+                    <span class="nav-item">STUDIO</span>
+                </a>
+                <span class="tool">STUDIO</span>
+            </li>
+            <li>
+                <a href="/available/B-type">
+                    <i class='bx bxs-door-open'></i>
+                    <span class="nav-item">LOFT</span>
+                </a>
+                <span class="tool">LOFT</span>
+            </li>
+            <li>
+                <a href="/available/C-type">
+                    <i class='bx bxs-door-open'></i>
+                    <span class="nav-item">PENTHOUSE</span>
+                </a>
+                <span class="tool">PENTHOUSE</span>
+            </li>
+            <li>
+                <a href="/profile">
+                    <i class='bx bxs-user'></i>
+                    <span class="nav-item">PROFILE</span>
+                </a>
+                <span class="tool">PROFILE</span>
+            </li>
+        </ul>
+    </div>
+    <div class="top-content">
+        <div class="top-container">
+            <div class="mini-text-container">
+                <p class="text-first">user-profile</p>
+            </div>
+            <div class="logo">
+                <img src="/images/icon/KAAAAB.png" class="logo">
+            </div>
+            <div class="top-login">
+                <% if (!user) {%>
+                    <!------CSS----->
+                    <style>
+
+                    </style>
+                    <!----------JS-->
+                    <button class="top-btn" onclick="goLogin()">Login</button>
+                    <script>function goLogin() { window.location.href = "/login"; }</script>
+                    <% }else { %>
+                        <!------CSS----->
+                        <style>
+
+                        </style>
+                        <!-------JS----->
+                        <button class="top-btn" onclick="goLogout()">Logout</button>
+                        <script>function goLogout() { window.location.href = "/logout"; }</script>
+                    <% } %>
+            </div>
+        </div>
+    </div>
+    <div class="main-page">
+        <div class="container">
+            <div class="user-info">
+                <h2 class="top-info">booking queue</h2>
+            <!-- แสดงข้อมูลการจองทั้งหมด -->
+                <p class="front-letter">username :<p class="last-letter"> <%= user ? user.first_name + ' ' + user.last_name : 'No name available' %></p></p>
+                    <% if (bookings.length > 0) { %>
+                        <% bookings.forEach(function(booking) { %>
+                            
+                                <p class="front-letter">Room-Type :<p class="last-letter"> <%= booking.room_type %></p></p>
+                                <p class="front-letter">Date :<p class="last-letter"> <%= new Date(booking.date).toLocaleDateString() %></p1></p>
+                                <p class="front-letter">Time : <p class="last-letter"> <%= booking.time %></p></p>
+                                <p class="front-letter">Booking Time : <p class="last-letter"> <%= booking.created_at %></p></p>
+                                <!-- ปุ่มยกเลิกการจอง -->
+                                <button class="cancel-btn" onclick="cancelBooking('<%= booking.id %>')">Cancel Booking</button>
+
+                        <% }); %>
+                    <% } else { %>
+                        <p class="bottom-letter">No bookings available</p>
+                    <% } %>
+                    <style>
+
+                        .cancel-btn{
+                            display: flex;
+                            position: relative;
+                            margin-bottom: 10px;
+                            width: 150px;
+                            height: 40px;
+                            align-items: center;
+                            justify-content: center;
+                        }
+                        
+                    </style>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    let btn = document.querySelector('#btn');
+    let sidebar = document.querySelector('.sidebar');
+
+    btn.onclick = function () {
+        sidebar.classList.toggle('active');
+    };
+    /*---------------------------*/
+
+    function cancelBooking(bookingId) {
+        if (confirm('คุณต้องการยกเลิกการจองนี้หรือไม่?')) {
+            fetch(`/profile/cancel/${bookingId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert(data.message);
+                        window.location.reload(); // รีเฟรชหน้าเมื่อยกเลิกสำเร็จ
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('เกิดข้อผิดพลาดในการยกเลิกการจอง');
+                });
+        }
+    }
+
+</script>
+
+</html>

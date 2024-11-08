@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon"type="image/jpg" href="/images/admin/icon-north2.png">
+    <title>D-Sereis</title>
+</head>
+<body>
+
+    <style>
+
+        body {
+            width: 1465px;
+            margin: 0;                        
+            padding: 0;                       
+            box-sizing: border-box;            
+            font-family: Arial, sans-serif;    
+            background-color: #f5f5f5;         
+            color: #333;                       
+            display: grid;                     
+            justify-content: center;           
+            align-items: center;     
+            font-family: monospace;                 
+        }
+
+        ul{
+            
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        li {
+            float: left;
+        }
+
+        li a {
+            display: block;
+            color: white;
+            text-align: center;
+            padding: 30px 30px;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+
+        li a:hover {
+            background-color: #6f6d6d;
+        }
+
+        li:nth-of-type(1) a:hover{
+            background-color: red;
+        }
+
+        li:nth-of-type(5) a{
+            background-color: aquamarine;
+        }
+
+       
+
+        #room{
+            margin-top: 50px;
+            display: grid;
+            grid-template-columns: repeat(5,17.2%);
+            gap: 40px;
+        }
+        
+        .square{
+            position: relative;
+            width: 200px;
+            height: 200px;
+            background-color: gray;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 800;
+        
+         }
+        .image-square{
+            position: relative;
+            width: 200px;
+            height: 150px;
+            object-fit: cover;
+            
+        }
+    </style>
+
+    <div class="btnnextpage"></div>
+    <ul id="">
+        <li><a href="http://localhost:3000/available">Back</a></li>
+        <li><a href="http://localhost:3000/available/A-type">A Type</a></li>
+        <li><a href="http://localhost:3000/available/B-type">B Type</a></li>
+        <li><a href="http://localhost:3000/available/C-type">C Type</a></li>
+        <li><a href="http://localhost:3000/available/D-type">D Type</a></li>
+    </ul>
+    </div>
+
+    <div class="container-1">
+        <div id="room"></div>
+    </div>
+
+    <script>
+        function showRoom(){
+            fetch("http://localhost:3000/available/api")
+            .then(response =>{
+                if(!response.ok){
+                    throw new Error('Network response was not ok '+response.statusText);
+                }
+                return response.json();
+            })
+            .then(data =>{
+                console.log("Data Recieved: ",data);
+
+                //js
+                let out = document.getElementById('room');
+                let sizeroom = data.rooms.length;
+                let img = "https://i.pinimg.com/564x/36/07/89/3607891ca710415128e25e0c0ffba483.jpg";
+                if(out){
+                    out.innerHTML = "";
+
+                    for(let i=0;i<=sizeroom;i++){
+                        let room = data.rooms[i];
+                        if(room.type === 'D'){      
+                            //main
+                            let square = document.createElement('div');
+                            square.className = 'square';
+                            //img
+                            let image = document.createElement('img');
+                            image.src = img;
+                            image.alt = "RoomD";
+                            image.className = 'image-square';
+                            //divText
+                            let text = document.createElement('p');
+                            text.innerHTML = room.type + " " + room.roomno;
+                            //set
+                            square.setAttribute('data-room-id',room.roomno);
+
+                            //functional
+                            square.style.backgroundColor = room.status === 1 ? "red" : "yellowgreen";
+
+                            square.appendChild(image);
+                            square.appendChild(text);
+                            out.appendChild(square);
+                            
+                        }
+                    }
+                }
+            })
+            .catch(error =>{
+                console.error("Fetch error",error);
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded",()=>{
+            showRoom();
+        })
+
+    </script>
+</body>
+</html>

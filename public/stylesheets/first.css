@@ -1,0 +1,131 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    box-sizing: border-box; 
+}
+
+body {
+    overflow-x: hidden; 
+}
+
+.banner {
+    width: 100%;
+    height: 100vh;
+}
+
+.navbar-container {
+    width: 100%;
+    border-bottom: 2px solid black;
+}
+
+.navbar {
+    width: 85%;
+    margin: auto;
+    padding: 35px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.logo {
+    width: 125px;
+    cursor: pointer;
+    position: absolute; 
+}
+
+.navbar ul {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; 
+    width: 100%;
+}
+
+.navbar ul li {
+    list-style: none;
+    margin: 0 20px;
+}
+
+.navbar ul li a {
+    text-decoration: none;
+    color: black;
+    text-transform: uppercase;
+    position: relative;
+}
+
+.navbar ul li a::after {
+    content: '';
+    height: 3px;
+    width: 0;
+    background: black;
+    position: absolute;
+    left: 0;
+    bottom: -5px;
+    transition: width 0.5s;
+}
+
+.navbar ul li a:hover::after {
+    width: 100%;
+}
+
+.content {
+    width: 100%;
+    height: 100%;
+    padding: 2rem;
+    background-color: white;
+}
+
+.logout-text {
+    cursor: pointer;
+    color: black;
+    text-transform: uppercase;
+    transition: color 0.3s;
+}
+
+.logout-text:hover {
+    color: gray;
+}
+
+.slideshow-container {
+    position: relative;
+    max-width: 100%;
+    margin: auto;
+    overflow: hidden;
+}
+
+.slides {
+    display: flex;
+    transition: transform 1s ease-in-out;
+}
+
+.slide {
+    min-width: 100%;
+    box-sizing: border-box;
+}
+
+.slide img {
+    width: 100%;
+    display: block;
+}
+
+.fade {
+    animation: fade 9s ease-in-out infinite;
+}
+
+@keyframes fade {
+    0% { opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.statuslink{
+    font-size: 20px;
+    font-family: sans-serif;
+    text-decoration: none;
+}
+
+.statuslink a{
+    display: flex;
+}

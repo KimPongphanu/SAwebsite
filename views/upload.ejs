@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TestUpload</title>
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            place-items: center;
+        }
+
+        .preview {
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+            display: flex;
+            flex-wrap: wrap;
+            /* gap: 10px; */
+            background-color: slategray;
+        }
+
+        .preview img {
+            width: 300px;
+            /* ขนาดพรีวิวของรูปภาพ */
+            height: auto;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .container {
+            position: relative;
+            top: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 600px;
+            height: 450px;
+            background-color: silver;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+
+        <h1>Image Gallery</h1>
+
+        <div class="preview" id="preview"></div> <!-- พรีวิวรูปภาพจะถูกแสดงที่นี่ -->
+
+        <% if (successMessage.length> 0) { %>
+            <script>
+                alert("<%= successMessage[0] %>"); // แสดงข้อความสำเร็จ
+            </script>
+            <% } %>
+
+                <form action="/upload" method="POST" enctype="multipart/form-data">
+                    <input type="file" name="image" id="imageInput" style="width: 250px; height: 100px;" multiple
+                        required>
+
+                    <select name="roomType" id="roomType" required>
+                        <option value="">-- Select Room Type --</option>
+                        <option value="1">Studio-Type</option>
+                        <option value="2">Loft-Type</option>
+                        <option value="3">Penthouse-Type</option>
+                    </select>
+                    <button type="submit" style="width: 150px; height: 50px;">Upload</button>
+                </form>
+
+                <button onclick="goBack()" style="width: 100px; height: 40px; border-radius: 5px; font-size: 16px; font-weight: 600;
+                color: white; background-color: red; position: absolute; top: -50px; left: 0; border: 1px solid white;" >Back</button>
+                <script>
+                    function goBack(){
+                        window.location.href = '/dashboard';
+                    }
+                </script>
+
+
+
+
+                <!-- <div class="gallery">
+                    <% images.forEach(image=> { %>
+                        <div class="image">
+                            <img src="/<%= image.filepath %>" alt="<%= image.filename %>" width="300">
+                        </div>
+                        <% }) %>
+                </div> -->
+
+                <script>
+                    // ฟังก์ชันสำหรับพรีวิวรูปภาพ
+                    document.getElementById('imageInput').addEventListener('change', function (event) {
+                        const previewContainer = document.getElementById('preview');
+                        previewContainer.innerHTML = ''; // เคลียร์พรีวิวก่อนหน้า
+
+                        const files = event.target.files; // ดึงไฟล์ที่ถูกเลือก
+                        for (let i = 0; i < files.length; i++) {
+                            const file = files[i];
+                            const reader = new FileReader();
+
+                            // เมื่ออ่านไฟล์เสร็จแล้ว
+                            reader.onload = function (e) {
+                                const img = document.createElement('img');
+                                img.src = e.target.result; // ใช้ผลลัพธ์จาก FileReader
+                                previewContainer.appendChild(img); // เพิ่มรูปภาพลงในพรีวิว
+                            }
+
+                            // เริ่มการอ่านไฟล์
+                            reader.readAsDataURL(file);
+                        }
+                    });
+                </script>
+    </div>
+
+</body>
+
+</html>

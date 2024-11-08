@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>data</title>
+    <link rel="stylesheet" href="/stylesheets/dashboard.css">
+</head>
+<body>
+    <div class="container">
+        <div class="navbox">
+            <br><br>
+            <div id="logo">
+                <img src="/images/admin/logoKab-orange2.png" alt="logo" style="width: 50px; height: 50px;">
+                <p>KabApartment</p>
+            </div>
+            
+            <div id="menu">
+                    
+                    <button id="optionButton"><img src="/images/icon/switch.png" alt="switch"><p>SwitchRoom</p></button>
+                    <button id="optionButton"><img src="/images/icon/open-file.png" alt="folder"><p>RoomData</p></button>
+                    <button id="optionButton"><img src="/images/icon/report.png" alt="folder"><p>SystemReport</p></button>
+                    <button id="optionButton"><img src="/images/icon/overview.png" alt="folder"><p>Visibility</p></button>
+                    <button id="optionButton"><img src="/images/icon/user.png" alt="user"><p>Users</p></button>
+                    <button id="optionButton"><img src="/images/icon/location.png" alt="location"><p>Traversal</p></button>
+                    <button id="optionButton" onclick="logoutbtn();">
+                        <img src="/images/icon/turn-off.png" alt="folder">
+                        <p>Log out</p>
+                    </button>
+                    <script>function logoutbtn(){window.location.href = "/dashboard/logout";}</script>
+                    
+
+                    <div id="datetime"></div>
+            </div>
+
+        </div>
+        <div class="mainbox">
+            <div id="mainbox">
+                
+                <div class="BoxOfFunction">
+                    <div id="output"></div>
+                    <div id="parent-text">
+                        <div id="child-text"><div></div><p>Occupied</p></div>
+                        <div id="child-text"><div></div><p>Unoccupied</p></div>
+                        <div id="child-text"><div><img src="/images/icon/choose.png"></div><p>Click to UpdateRoom</p></div>
+                    </div>
+                </div>
+                <div class="BoxOfFunction">
+                    <div id="dataBox"></div>
+                </div>
+                
+                <div class="BoxOfFunction">
+                    <div id="LogBox">
+                        <form id="clearLogForm" action="/run-sql" method="post">
+                            <button type="submit" id="LogBox-btn">Clear Log</button>
+                        </form>
+                        <div id="dataLog"></div>
+                    </div>
+                </div>
+
+                <div class="BoxOfFunction">
+                    <div id="visibilityBox">
+                        <p>Manual Switch</p>
+                        <div id="statusTextBox">
+                            <div></div>
+                            <div id="status-text"> <p>สถานะ: </p> <p>ปกติ</p> </div>
+                        </div>
+                        <button id="s-1">Switch</button>
+                        <script>
+                            let s1 = document.getElementById('s-1');
+                            s1.addEventListener("mouseover",()=>{  s1.style.opacity = "30%";});
+                            s1.addEventListener("mouseout",()=>{  s1.style.opacity = "100%";});
+                        </script>
+                        <div id="textDenote">
+                            <p>เมื่อกดปุ่มจะทำการเปลี่ยนสถานะการจองห้อง</p><p>โดยปกติระบบจะเปิดอัตโนมัติ</p><p>7:00AM-7:00PM ทุกวัน</p>
+                        </div>
+                        
+                    </div>
+                </div>
+
+                <div class="BoxOfFunction">
+                    <div id="exBoxOfUser">
+                        <table id="userTable">
+                            <thead>
+                                <tr>
+                                    <th>Image</th>
+                                    <th>Fullname</th>
+                                    <th>ID Card</th>
+                                    <th>Telephone</th>
+                                </tr>
+                            </thead>
+                            <tbody id="boxOfUser"></tbody>
+                        </table>
+                    </div>
+                </div>
+                
+
+                <div class="BoxOfFunction">
+                    <div id="menuTraversalout"></div>
+                </div>
+                                
+            </div>
+
+        </div>
+    </div>
+    
+
+
+
+    <script>
+        //Start
+        document.addEventListener('DOMContentLoaded', () => { //start
+            fetchData();
+            fetchLog();
+            getButton();
+            getTraversalBox()
+            getUser();
+            setInterval(updateDateTime, 1000);
+            updateDateTime();
+        });
+
+        //UpdateRoom
+        function toggleRoomStatus(roomno, currentStatus) {
+            const newStatus = currentStatus === 1 ? 0 : 1; // Toggle status between 1 and 0
+
+            fetch(`/dashboard/${roomno}`, { // แก้ URL ให้ถูกต้อง
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status: newStatus })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to update room status');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    console.log('Room status updated successfully');
+                    
+                    // อัปเดตข้อมูลห้องใหม่โดยเรียก fetchData อีกครั้ง
+                    fetchData();
+                    fetchLog();
+                } else {
+                    console.error('Failed to update room status:', data.message);
+                }
+            })
+            .catch(err => console.error('Error:', err));
+        }
+        
+        function fetchData (){
+            const ID = "/dashboard/api";
+            fetch(ID)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Data Recieved");
+                    fetchRoom(data);
+                })
+                .catch(error => {
+                    console.error("Fetch error", error);
+                });
+        }
+        
+         //getRoom for update
+        function fetchRoom(data) {
+                    // js output
+                    let out = document.getElementById('output');
+                    let count = data.rooms.length;
+                    if (out) {
+                        out.innerHTML = ""; 
+
+                        for (let i = 0; i < count; i++) {
+                            let room = data.rooms[i];
+                            let row = document.createElement('button');
+                            row.className = 'square';
+                            
+                            let img = [document.createElement('img'),
+                                       document.createElement('img')];
+                            
+                            img[0].src = "/images/icon/bed.png";
+                            img[1].src = "/images/icon/bed-bunk.png";
+
+                            if(room.ROOMNO === 400){
+                                row.appendChild(img[1]);
+                            }else{
+                                row.appendChild(img[0]);
+                            }
+                            
+                            let text = document.createTextNode(room.roomno); 
+                            row.appendChild(text);
+
+                            row.style.backgroundColor = room.status === 1 ? '#dc7633' : '#58d68d';
+                            row.setAttribute('data-room-id', room.roomno);
+
+                            row.addEventListener('click', function () {
+                                toggleRoomStatus(room.roomno, room.status);
+                            });
+
+                            row.addEventListener('mouseover',()=>{//
+                                    row.style.color = 'white';
+                                    row.style.opacity = '50%';
+                                    row.style.transition = '0.5s ease';
+                            });
+                            
+                            row.addEventListener("mouseover",function(){
+                                row.style.color = 'white';
+                                row.style.opacity = '50%';
+                                row.style.transition = '0.5s ease';
+                            });
+
+
+                            row.addEventListener('mouseout',()=>{
+                                row.style.color = 'black';
+                                row.style.opacity = '100%';
+                                row.style.transition = '0.5s ease'
+                        })
+
+                            out.appendChild(row);
+                        }
+                    }
+                    //fetchRoom2
+                    let out1 = document.getElementById('dataBox');
+                    let count1 = data.rooms.length;
+                    if (out1) {
+                        out1.innerHTML = ""; 
+
+                        for (let i = 0; i < count1; i++) {
+                            let room = data.rooms[i];
+                            let row = document.createElement('div');
+                            row.className = 'square';
+                            let img = document.createElement('img');
+                            img.src = "/images/icon/search.png";
+                            let text = document.createTextNode(room.roomno);
+                            row.appendChild(img);
+                            row.appendChild(text);
+                            row.style.backgroundColor = room.status === 1 ? '#aab7b8' : '#f4d03f';
+                            row.setAttribute('data-room-id', room.roomno);
+
+                            row.addEventListener('mouseover',()=>{
+                                    row.style.color = 'white';
+                                    row.style.opacity = '50%';
+                                    row.style.transition = '0.5s ease'
+                            });
+
+                            row.addEventListener('mouseout',()=>{
+                                row.style.color = 'black';
+                                row.style.opacity = '100%';
+                                row.style.transition = '0.5s ease'
+                            })
+
+                            row.addEventListener("click",()=>{
+                                window.location.href = `/dashboard/dataroom/${room.roomno}`;
+                            })
+
+                            out1.appendChild(row);
+                        }
+                    }
+                }
+         
+        //get log
+        function fetchLog() {
+            const ID = "http://localhost:3000/dashboard/apilog";
+            fetch(ID)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Data Recieved:", data);
+
+                    // js datalog
+                    let out = document.getElementById('dataLog');
+                    let count = data.item.length;
+                    if (out) {
+                        out.innerHTML = ""; 
+
+                        for (let i = 0; i < count; i++) {
+                            let item = data.item[i];
+                            let row = document.createElement('li');
+                            row.className = 'LogBox';
+                            //row.innerHTML = "NO: "+item.count+" R: "+item.id+" S: "+item.function + " T: "+item.datetime;
+                            row.innerHTML = "["+item.count+"] "+ item.datetime +" ID: "+item.id+" status:: "+item.function;
+                            out.appendChild(row);
+                        }
+                    }
+                })
+            .catch(error => {
+                 console.error("Fetch error", error);
+            });
+        }
+        //log clear Button
+        document.getElementById('clearLogForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        fetch('/dashboard/run-sql', { 
+            method: 'POST'
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to delete data');
+            }
+            return response.text(); 
+        })
+        .then(message => {
+            console.log(message);
+            fetchLog();
+            
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+     
+        //ShowCurrentTime
+        function updateDateTime() {
+                const now = new Date();
+                //h:m:s
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                const seconds = String(now.getSeconds()).padStart(2, '0');
+                //d/m/y
+                const day = String(now.getDate()).padStart(2, '0');
+                const month = String(now.getMonth() + 1).padStart(2, '0'); 
+                const year = String(now.getFullYear()).slice(-2);
+                //show 
+                document.getElementById('datetime').innerHTML = `${hours}:${minutes}:${seconds} <br> ${day}/${month}/${year}`;
+            }
+
+        function getFunctionButton(index){
+            let displayType = document.querySelectorAll(".BoxOfFunction"); 
+            let buttonOfMenu = document.querySelectorAll("#optionButton");
+            let size = buttonOfMenu.length;
+            //Find click[index] and change status them.
+            for(let i=0;i<size;i++){
+                if(i === index){
+                    buttonOfMenu[i].style.backgroundColor = "#d17e7e5d";
+                    displayType[i].style.display = "block";
+                }else{
+                    buttonOfMenu[i].style.backgroundColor = "#ffffff00";
+                    displayType[i].style.display = "none";
+                }
+            }
+        }   
+
+        //getButtonMenu and control
+        function getButton(){
+            let displayType = document.querySelectorAll(".BoxOfFunction"); //6
+            let buttonOfMenu = document.querySelectorAll("#optionButton");
+            buttonOfMenu.forEach((div,index) =>{ //for loop
+                div.addEventListener("mouseover",()=>{div.style.opacity = "30%"});
+                div.addEventListener("mouseout",()=>{div.style.opacity = "100%"});
+                
+                
+                //start *********** for tester and edit for long time ************
+                buttonOfMenu[3].style.backgroundColor = "#d17e7e5d";
+                displayType[0].style.display = "none";
+                displayType[1].style.display = "none"; 
+                displayType[2].style.display = "none";
+                displayType[4].style.display = "none";
+                displayType[3].style.display = "block";
+                displayType[5].style.display = "none";
+
+                div.addEventListener("click",()=>{
+                    getFunctionButton(index);
+                })
+                
+            })
+        }
+
+        // const Myinput = prompt("Key Command :");
+        // console.log("Input : "+ Myinput);
+        
+        function getTraversalBox(){
+            let text = ["Start","login","ViewRoom","A-Type","B-Type","C-Type","D-Type"];
+            let link = ["/","/login","/Available","/Available/A-type"
+                        ,"/Available/B-type","/Available/C-type"
+                        ,"/Available/D-type"];
+
+            let icon = ["/images/icon/home.png","/images/icon/login.png","/images/icon/list.png",
+                        "/images/icon/letter-a.png","/images/icon/letter-b.png","/images/icon/letter-c.png",
+                        "/images/icon/letter-d.png"];
+
+            let output = document.getElementById('menuTraversalout');
+
+            let img = [];
+            for(let i=0;i<icon.length;i++){
+                img[i] = document.createElement('img');
+                img[i].src = icon[i];
+            }
+
+            if(output){
+                output.innerHTML = "";
+                for(let i=0;i<7;i++){
+                    let child = document.createElement('button');
+                    child.className = 'menuTraversal';
+
+                    child.appendChild(img[i]);
+                    child.appendChild(document.createTextNode(text[i]));
+
+                    child.addEventListener("click",()=>{
+                        window.location.href = link[i];
+                    });
+                    child.addEventListener("mouseover",()=>{
+                        child.style.opacity = "0.3";
+                        child.style.borderColor = "#F5F5F5";
+                        child.style.transition = "0.25s ease";
+                        
+                    })
+                    child.addEventListener("mouseout",()=>{
+                        child.style.opacity = "1";
+                        child.style.borderColor = "#996515";
+                        child.style.transition = "0.25s ease";
+                    })
+
+                    output.appendChild(child);
+                }
+            }
+        }
+
+        function getUser() {
+            let fetchID = "/dashboard/apiUsers";
+            fetch(fetchID)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Data received: ", data);
+
+                    let parent = document.getElementById('boxOfUser');
+                    let size = data.item.length;
+
+                    if (parent) {
+                        parent.innerHTML = ""; // ล้างเนื้อหาภายใน <tbody> ก่อน
+                        for (let i = 0; i < size; i++) {
+                            let item = data.item[i];
+
+                            // สร้างแถวใหม่ในตาราง
+                            let row = document.createElement('tr');
+
+                            // สร้างเซลล์ข้อมูลสำหรับรูปภาพ
+                            let imgCell = document.createElement('td');
+                            let img = document.createElement('img');
+                            img.src = "/images/icon/man.png"; // หรือ item.image ถ้ามี URL รูปภาพจาก API
+                            img.alt = "User Image";
+                            img.style.width = "64px"; // กำหนดขนาดของรูปภาพ
+                            img.style.height = "64px";
+                            imgCell.appendChild(img);
+
+                            // สร้างเซลล์ข้อมูลสำหรับชื่อเต็ม
+                            let fullNameCell = document.createElement('td');
+                            fullNameCell.textContent = item.first_name + " " + item.last_name;
+
+                            // สร้างเซลล์ข้อมูลสำหรับเลขบัตรประชาชน
+                            let idCardCell = document.createElement('td');
+                            idCardCell.textContent = item.id_card;
+
+                            // สร้างเซลล์ข้อมูลสำหรับเบอร์โทรศัพท์
+                            let telCell = document.createElement('td');
+                            telCell.textContent = item.tel;
+
+                            // เพิ่มเซลล์ทั้งหมดเข้าในแถว
+                            row.appendChild(imgCell);     // รูปภาพ
+                            row.appendChild(fullNameCell); // ชื่อเต็ม
+                            row.appendChild(idCardCell);  // เลขบัตรประชาชน
+                            row.appendChild(telCell);     // เบอร์โทรศัพท์
+
+                            // เพิ่มแถวเข้าในตาราง
+                            parent.appendChild(row);
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error("Fetch Error:", error);
+                });
+        }   
+
+
+    </script>
+
+
+</body>
+</html>
